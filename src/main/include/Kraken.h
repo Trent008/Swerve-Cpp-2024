@@ -3,7 +3,7 @@
 #include "ctre/phoenix6/TalonFX.hpp"
 using namespace ctre::phoenix6;
 
-// object to control a Falcon500 brushless motor
+// object to control a Kraken brushless motor
 class Kraken {
 private:
     hardware::TalonFX *motor;

@@ -38,6 +38,12 @@ public:
         driveMotor->initialize();
         turningMotor->SetInverted(true);
         turningMotor->BurnFlash();
+        // turningMotor->GetPIDController().SetP(0.1);
+        // turningMotor->GetPIDController().SetI(0);
+        // turningMotor->GetPIDController().SetD(1);
+        // turningMotor->GetPIDController().SetIZone(0);
+        // turningMotor->GetPIDController().SetFF(0);
+        // turningMotor->GetPIDController().SetOutputRange(-1, 1);
     }
 
     // calculate the swerve module vector
