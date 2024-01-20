@@ -5,6 +5,6 @@ using namespace std;
 
 struct AutonomousSetpoint
 {
-    complex<float> position;
-    float angle = 0;
+    complex<float> robotPosition;
+    float robotAngle = 0;
 };
