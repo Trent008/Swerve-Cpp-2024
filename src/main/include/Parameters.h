@@ -6,12 +6,6 @@ using namespace std;
 // parameters for robot movement and autonomous
 struct Parameters
 {  
-    // to convert to degrees
-    float const degrees = (180/M_PI);
-
-    // to convert to radians
-    float const radians = (M_PI/180);
-
     // max amperage for the drive motor PID controllers
     float const driveMotorMaxAmperage = 45;
 

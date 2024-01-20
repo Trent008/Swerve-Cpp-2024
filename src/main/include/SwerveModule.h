@@ -36,7 +36,7 @@ public:
     void initialize()
     {
         driveMotor->initialize();
-        turningMotor->SetInverted(true);
+        turningMotor->SetInverted(false);
         turningMotor->BurnFlash();
     }
 
@@ -75,7 +75,7 @@ public:
             }
             driveMotor->SetVelocity(driveMotorVelocity);
             // set the turning motor to a speed proportional to its error
-            turningMotor->Set(-error / 180);
+            turningMotor->Set(error / 180);
         }
         else // if the target velocity is basically zero, do nothing
         {
