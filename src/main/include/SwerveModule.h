@@ -27,7 +27,7 @@ public:
         wheelAngleEncoder = new hardware::CANcoder{canCoderID};
         // calculate the steering vector
         steeringVector = position;
-         // rotate by pi/2 radians
+         // rotate 90 degrees CCW
         steeringVector *= complex<float>(0, 1);
         steeringVector /= abs(steeringVector);
     }
@@ -38,12 +38,6 @@ public:
         driveMotor->initialize();
         turningMotor->SetInverted(true);
         turningMotor->BurnFlash();
-        // turningMotor->GetPIDController().SetP(0.1);
-        // turningMotor->GetPIDController().SetI(0);
-        // turningMotor->GetPIDController().SetD(1);
-        // turningMotor->GetPIDController().SetIZone(0);
-        // turningMotor->GetPIDController().SetFF(0);
-        // turningMotor->GetPIDController().SetOutputRange(-1, 1);
     }
 
     // calculate the swerve module vector
@@ -62,7 +56,7 @@ public:
     void Set(complex<float> driveRate, float angularRate)
     {
         // find the current wheel angle
-        float currentWheelAngle = wheelAngleEncoder->GetAbsolutePosition().GetValue().value()*M_PI*2;
+        float currentWheelAngle = wheelAngleEncoder->GetAbsolutePosition().GetValue().value()*360;
         // find the module target velocity
         complex<float> moduleTargetVelocity = getModuleVector(driveRate, angularRate);
 
@@ -70,18 +64,18 @@ public:
         if (abs(moduleTargetVelocity) > 0.001)
         {
             // find the wheel's error from it's target angle
-            float error = angleDifference(arg(moduleTargetVelocity), currentWheelAngle);
+            float error = angleDifference(arg(moduleTargetVelocity)*180/M_PI, currentWheelAngle);
             // find the drive motor velocity
             float driveMotorVelocity = abs(moduleTargetVelocity);
             // reverse the wheel direction if it is more efficient
-            if (abs(error) > M_PI/2)
+            if (abs(error) > 90)
             {
                 driveMotorVelocity = -driveMotorVelocity;
-                error = angleSum(error, M_PI);
+                error = angleSum(error, 180);
             }
             driveMotor->SetVelocity(driveMotorVelocity);
             // set the turning motor to a speed proportional to its error
-            turningMotor->Set(-error / M_PI);
+            turningMotor->Set(-error / 180);
         }
         else // if the target velocity is basically zero, do nothing
         {
@@ -91,7 +85,7 @@ public:
         
         // find the delta position change since last Set() call
         float currentPosition = driveMotor->getPosition();
-        positionChangeVector = polar<float>((currentPosition - lastPosition) * parameters.driveMotorInPerRot, currentWheelAngle);
+        positionChangeVector = polar<float>((currentPosition - lastPosition) * parameters.driveMotorInPerRot, currentWheelAngle*M_PI/180);
         lastPosition = currentPosition;
     }
 

@@ -49,7 +49,7 @@ public:
     void Set(complex<float> driveRate, float turnRate, bool useAcceleration = true)
     {
         // set the current angle to the gyro angle + the starting angle
-        currentAngle = angleSum(-navx.GetYaw()*M_PI/180, parameters.startingAngle);
+        currentAngle = angleSum(-navx.GetYaw(), parameters.startingAngle);
 
         // set the target rates to the input
         targetDriveRate = driveRate;
@@ -85,7 +85,7 @@ public:
         }
 
         // store the robot oriented drive rate
-        robotDriveRate = currentDriveRate * polar<float>(1, -currentAngle);
+        robotDriveRate = currentDriveRate * polar<float>(1, -currentAngle*M_PI/180);
         // stores the robot's change in position since last Set()
         complex<float> positionChange;
         // drive the modules and average the module position changes
@@ -95,7 +95,7 @@ public:
             positionChange += modules[i].getPositionChangeVector();
         }
         // field-orient the position change vector
-        positionChange *= polar<float>(1, currentAngle);
+        positionChange *= polar<float>(1, currentAngle*M_PI/180);
         // average the position change of all four swerve modules
         positionChange /= 4;
         // add the change in position over this cycle to the running total
@@ -125,7 +125,7 @@ public:
     void normalizeSwerveRate(complex<float> driveRate, float turnRate)
     {
         // robot-orient the drive rate
-        driveRate *= polar<float>(1, -currentAngle);
+        driveRate *= polar<float>(1, -currentAngle*M_PI/180);
 
         // compare all of the module velocities to find the largest
         float fastestModule = 1;
