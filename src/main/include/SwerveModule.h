@@ -73,13 +73,13 @@ public:
                 driveMotorVelocity = -driveMotorVelocity;
                 error = angleSum(error, 180);
             }
-            driveMotor->SetVelocity(driveMotorVelocity);
+            driveMotor->Set(driveMotorVelocity);
             // set the turning motor to a speed proportional to its error
             turningMotor->Set(error / 180);
         }
         else // if the target velocity is basically zero, do nothing
         {
-            driveMotor->SetVelocity(0);
+            driveMotor->Set(0);
             turningMotor->Set(0);
         }
         
