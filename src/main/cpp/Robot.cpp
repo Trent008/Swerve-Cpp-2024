@@ -14,7 +14,7 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic()
 {
   // drive the robot in a 24 inch radius circle
-  if (swerve.driveToward(polar<float>(i*M_PI/180, 24), 0))
+  if (swerve.driveToward(polar<float>(i*M_PI/180, 10), 0))
   {
     i++;
   }
